@@ -134,10 +134,23 @@ class _HomeScreenState extends State<HomeScreen> with AfterInitMixin {
       }
       return Container(
         height: 250,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(_homeStore.animal!.imageLink!),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
           ),
+        ),
+        child: Image.network(
+          _homeStore.animal!.imageLink!,
+          loadingBuilder: (_, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ThemeColors.black,
+              ),
+            );
+          },
         ),
       );
     });
