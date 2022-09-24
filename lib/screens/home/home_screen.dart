@@ -2,14 +2,10 @@ import 'package:zoorandomwiki/localization/app_localization.dart';
 import 'package:zoorandomwiki/stores/home/home_store.dart';
 import 'package:zoorandomwiki/theme/theme_colors.dart';
 import 'package:zoorandomwiki/theme/theme_dimensions.dart';
-import 'package:zoorandomwiki/theme/themes.dart';
 import 'package:zoorandomwiki/utils/mixins/after_init_state.dart';
 import 'package:zoorandomwiki/utils/string_utils.dart';
-import 'package:zoorandomwiki/widgets/custom_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:theme_provider/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/';
@@ -36,183 +32,58 @@ class _HomeScreenState extends State<HomeScreen> with AfterInitMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          _buildWelcomeCard(),
-          _buildThemeSelector(),
-          _buildCounterDisplay(),
-        ],
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            _buildAnimalImage(),
+            _buildAnimalDetails(),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton.large(
+      floatingActionButton: FloatingActionButton(
         elevation: 0,
         onPressed: () {
           _homeStore.increment();
         },
-        child: const Icon(Icons.plus_one),
+        child: const Icon(Icons.refresh),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
-  Widget _buildWelcomeCard() {
-    return CustomCard(
-      color: ThemeColors.primaryClearer,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${_appLocalization.welcome},',
-                style: _theme.textTheme.headline3?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  color: _theme.cardColor,
-                ),
-              ),
-              Text(
-                '${getWelcomeMessage()}!',
-                style: _theme.textTheme.headline6,
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.all(ThemeDimensions.spacingRegular),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              color: ThemeColors.white,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(Icons.person),
-          )
-        ],
-      ),
-    );
+  Widget _buildAnimalDetails() {
+    return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DetailsText(hint: _appLocalization.animalName, content: 'nome'),
+            DetailsText(hint: _appLocalization.scientificName, content: 'nome'),
+            DetailsText(hint: _appLocalization.animalType, content: 'nome'),
+            DetailsText(hint: _appLocalization.activeTime, content: 'nome'),
+            DetailsText(hint: _appLocalization.lengthMin, content: 'nome'),
+            DetailsText(hint: _appLocalization.lengthMax, content: 'nome'),
+            DetailsText(hint: _appLocalization.weightMin, content: 'nome'),
+            DetailsText(hint: _appLocalization.weightMax, content: 'nome'),
+            DetailsText(hint: _appLocalization.lifespan, content: 'nome'),
+            DetailsText(hint: _appLocalization.habitat, content: 'nome'),
+            DetailsText(hint: _appLocalization.diet, content: 'nome'),
+            DetailsText(hint: _appLocalization.geoRange, content: 'nome'),
+          ],
+        ));
   }
 
-  String getWelcomeMessage() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) {
-      return _appLocalization.goodMorning;
-    } else if (hour < 18) {
-      return _appLocalization.goodAfternoon;
-    } else {
-      return _appLocalization.goodEvening;
-    }
-  }
-
-  Widget _buildThemeSelector() {
-    final currentTheme = ThemeProvider.themeOf(context).id == Themes.lightId
-        ? Themes.lightId
-        : Themes.darkId;
-
-    final isLight = currentTheme == Themes.lightId;
-    return CustomCard(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _appLocalization.theme,
-            style: _theme.textTheme.headline4?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            isLight ? _appLocalization.light : _appLocalization.dark,
-            style: _theme.textTheme.headline4?.copyWith(),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: ThemeColors.gray),
-            ),
-            child: Row(
-              children: [
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
-                    color: isLight
-                        ? ThemeColors.darkBackground
-                        : ThemeColors.lightBackground,
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.light_mode,
-                      color: isLight
-                          ? ThemeColors.lightBackground
-                          : ThemeColors.darkBackground,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        ThemeProvider.controllerOf(context)
-                            .setTheme(Themes.lightId);
-                      });
-                      ThemeProvider.controllerOf(context).saveThemeToDisk();
-                    },
-                  ),
-                ),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7),
-                    color: isLight
-                        ? ThemeColors.lightBackground
-                        : ThemeColors.darkBackground,
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.dark_mode,
-                      color: isLight
-                          ? ThemeColors.darkBackground
-                          : ThemeColors.lightBackground,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        ThemeProvider.controllerOf(context)
-                            .setTheme(Themes.darkId);
-                      });
-                      ThemeProvider.controllerOf(context).saveThemeToDisk();
-                    },
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCounterDisplay() {
-    return CustomCard(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _appLocalization.counter,
-            style: _theme.textTheme.headline4?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Observer(
-            builder: (_) {
-              return Text(
-                _homeStore.counter.toString(),
-                style: _theme.textTheme.headline4?.copyWith(),
-              );
-            },
-          ),
-          TextButton(
-            onPressed: () {
-              _homeStore.increment();
-            },
-            child: Text(
-              _appLocalization.increment,
-              style: _theme.textTheme.headline4?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          )
-        ],
+  Widget _buildAnimalImage() {
+    return Container(
+      height: 250,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(
+              // TODO(xmanelsantos): Depois de adicionar a chamada a API, implementar o link que vem do response
+              'https://upload.wikimedia.org/wikipedia/commons/a/a4/DPPP_5348.jpg'),
+        ),
       ),
     );
   }
@@ -222,6 +93,40 @@ class _HomeScreenState extends State<HomeScreen> with AfterInitMixin {
       title: Text(
         StringUtils.formatAppName(_appLocalization.appName),
       ),
+    );
+  }
+}
+
+class DetailsText extends StatelessWidget {
+  final String hint;
+  final String content;
+  const DetailsText({Key? key, required this.hint, required this.content})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          hint,
+          textAlign: TextAlign.start,
+          style: theme.textTheme.headline6?.copyWith(
+            color: ThemeColors.gray,
+            fontWeight: FontWeight.w300,
+            fontSize: ThemeDimensions.fontSmall,
+          ),
+        ),
+        Text(
+          content,
+          textAlign: TextAlign.start,
+          style: theme.textTheme.headline5?.copyWith(
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
     );
   }
 }

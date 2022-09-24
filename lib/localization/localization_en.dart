@@ -10,5 +10,17 @@ class LocalizationEN {
         'good_morning': 'Good morning',
         'good_afternoon': 'Good afternoon',
         'good_evening': 'Good evening',
+        'animal_name': 'Animal name',
+        'scientific_name': 'Scientific name',
+        'animal_type': 'Animal type',
+        'active_time': 'Active time',
+        'length_min': 'Minimum length',
+        'length_max': 'Maximum length',
+        'weight_min': 'Minimum weight',
+        'weight_max': 'Maximum weight',
+        'lifespan': 'Lifespan',
+        'habitat': 'Habitat',
+        'diet': 'Diet',
+        'geo_range': 'Geo range',
       };
 }

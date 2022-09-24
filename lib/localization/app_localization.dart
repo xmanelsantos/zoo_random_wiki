@@ -41,6 +41,35 @@ class AppLocalization {
 
   String get goodEvening =>
       _localizedValues[locale.languageCode]!['good_evening']!;
+
+  // animal region
+  String get animalName =>
+      _localizedValues[locale.languageCode]!['animal_name']!;
+
+  String get scientificName =>
+      _localizedValues[locale.languageCode]!['scientific_name']!;
+
+  String get animalType =>
+      _localizedValues[locale.languageCode]!['animal_type']!;
+
+  String get activeTime =>
+      _localizedValues[locale.languageCode]!['active_time']!;
+
+  String get lengthMin => _localizedValues[locale.languageCode]!['length_min']!;
+
+  String get lengthMax => _localizedValues[locale.languageCode]!['length_max']!;
+
+  String get weightMin => _localizedValues[locale.languageCode]!['weight_min']!;
+
+  String get weightMax => _localizedValues[locale.languageCode]!['weight_max']!;
+
+  String get lifespan => _localizedValues[locale.languageCode]!['lifespan']!;
+
+  String get habitat => _localizedValues[locale.languageCode]!['habitat']!;
+
+  String get diet => _localizedValues[locale.languageCode]!['diet']!;
+
+  String get geoRange => _localizedValues[locale.languageCode]!['geo_range']!;
 }
 
 class Locales {
